@@ -1,0 +1,15 @@
+### PyCharm ###
+.idea
+.idea/*
+__pycache__/
+
+### Rasa ###
+/models/
+/.rasa/
+
+### - ###
+/files
+/sh_scripts/
+/utils/t2s/silero_model/ru_v3.pt
+/read_for_me.txt
+/certificate.py

@@ -1,0 +1,103 @@
+version: "3.0"
+
+intents:
+  - goodbye
+  - Приветствие
+  - menu
+  - Отпуск: {use_entities: [vacation_duration, vacation_start, vacation_type]}
+  - Шаблоны: {use_entities: [document_tmpl_type]}
+
+entities:
+- vacation_duration
+- vacation_start
+- vacation_type
+- document_tmpl_type
+
+slots:
+  slot_greeting_answer:
+    type: text
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: greeting_form
+            requested_slot: slot_greeting_answer
+  slot_vacation_type:
+    type: text
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: vacation_form
+            requested_slot: slot_vacation_type
+  slot_vacation_start:
+    type: text
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: vacation_form
+            requested_slot: slot_vacation_start
+  slot_vacation_duration:
+    type: text
+    mappings:
+    - type: from_text
+      conditions:
+        - active_loop: vacation_form
+          requested_slot: slot_vacation_duration
+  slot_vacation_submit:
+    type: text
+    mappings:
+    - type: from_text
+      conditions:
+        - active_loop: vacation_form
+          requested_slot: slot_vacation_submit
+  slot_document_tmpl_type:
+    type: text
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: document_tmpl_form
+            requested_slot: slot_document_tmpl_type
+
+forms:
+  greeting_form:
+    required_slots:
+      - slot_greeting_answer
+  vacation_form:
+    required_slots:
+      - slot_vacation_type
+      - slot_vacation_start
+      - slot_vacation_duration
+      - slot_vacation_submit
+  document_tmpl_form:
+    required_slots:
+      - slot_document_tmpl_type
+
+actions:
+  - action_restart_without_text
+  - action_restart
+  - action_menu
+
+  - action_ask_greeting_form_slot_greeting_answer
+  - validate_greeting_form
+  - action_submit_greeting_form
+
+  - action_vacation_init
+  - action_ask_vacation_form_slot_vacation_type
+  - action_ask_vacation_form_slot_vacation_start
+  - action_ask_vacation_form_slot_vacation_duration
+  - action_ask_vacation_form_slot_vacation_submit
+#  - action_vacation_end
+  - validate_vacation_form
+
+  - action_document_tmpl_init
+  - action_ask_document_tmpl_form_slot_document_tmpl_type
+  - action_document_tmpl_end
+  - validate_document_tmpl_form
+
+#responses:
+#  utter_goodbye:
+#  - text: "Рад был помочь!"
+
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

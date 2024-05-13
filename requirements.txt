@@ -1,0 +1,10 @@
+rasa
+torch
+pydub
+nltk
+pymorphy2
+openai-whisper
+pytorch_lightning
+transformers
+ffmpeg
+fpdf

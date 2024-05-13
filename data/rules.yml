@@ -1,0 +1,100 @@
+version: "3.0"
+
+# СЛУЖЕБНЫЕ
+rules:
+- rule: restart
+  steps:
+    - intent: restart
+    - action: action_restart
+
+- rule: goodbye
+  steps:
+    - intent: goodbye
+    - action: action_restart
+
+#- rule: Say goodbye anytime the user says goodbye
+#  steps:
+#    - intent: goodbye
+#    - action: utter_goodbye
+
+- rule: menu
+  steps:
+  - intent: menu
+  - action: action_menu
+  wait_for_user_input: false
+
+# ПРИВЕТСТВИЕ
+- rule: Activate greeting form
+  steps:
+    - intent: Приветствие
+    - action: greeting_form
+    - active_loop: greeting_form
+
+- rule: Submit greeting form
+  condition:
+    - active_loop: greeting_form
+  steps:
+    - action: greeting_form
+    - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
+    - action: action_submit_greeting_form
+
+# ОТПУСК
+- rule: Activate action_vacation_init
+  steps:
+    - intent: Отпуск
+    - action: action_vacation_init
+    - active_loop: action_vacation_init
+  wait_for_user_input: false
+
+- rule: Submit vacation form
+  condition:
+    - active_loop: vacation_form
+  steps:
+    - action: vacation_form
+    - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
+    - action: action_restart_without_text
+#    - action: action_vacation_end
+#  wait_for_user_input: false
+#
+#- rule: Submit action_vacation_end
+#  condition:
+#    - active_loop: action_vacation_end
+#  steps:
+#    - action: action_vacation_end
+#    - active_loop: null
+#    - slot_was_set:
+#        - requested_slot: null
+#    - action: action_restart_without_text
+
+# ШАБЛОНЫ ДОКУМЕНТОВ
+- rule: Activate document_tmpl form
+  steps:
+    - intent: Шаблоны
+    - action: action_document_tmpl_init
+    - active_loop: action_document_tmpl_init
+  wait_for_user_input: false
+
+- rule: Submit document_tmpl form
+  condition:
+    - active_loop: document_tmpl_form
+  steps:
+    - action: document_tmpl_form
+    - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
+    - action: action_document_tmpl_end
+  wait_for_user_input: false
+
+- rule: Submit action_document_tmpl_end
+  condition:
+    - active_loop: action_document_tmpl_end
+  steps:
+    - action: action_document_tmpl_end
+    - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
+    - action: action_restart_without_text
